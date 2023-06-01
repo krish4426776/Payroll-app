@@ -1,0 +1,130 @@
+{% include 'base/nav.html' %}
+{% block content %}
+<style>
+    .main{
+        display:grid;
+        grid-template-columns: 1fr 3fr 1fr  ;
+
+    }
+</style>
+<div class="main">
+    
+        
+        <div class="user">
+                
+            {% if request.user.is_superuser  %}
+            <h1> Users </h1>
+            {% for x in user %}
+            {{ x.username }} <span class="badge bg-info text-dark">{{ x.user_type }}</span>
+            <br>
+            <span><a href="{% url 'edit' x.id %}">  <button type="button" class="btn btn-outline-primary">EDIT </button></a></span>
+            <span><a href="{% url 'delete' x.id %}"> <button type="button" class="btn btn-outline-danger" > DELETE </button> </a></span>          
+            <br>          
+            {% endfor %}
+            {% endif %}
+        </div>
+
+
+        <div class="transactions">
+            {% if request.user.is_superuser or request.user.user_type == 'seller' %}
+           
+                <h1> BILLS </h1>
+                <br>
+                {% if request.user.is_superuser %}
+                    {% for y in bills %}
+                    {% if y.payment_status == 'unfulfilled'  %}
+
+                   
+                        seller name: {{y.seller.user.username}}<br>
+                        buyer name: {{y.buyer.user.username}}<br>
+                        amount = {{y.amount}}<br>
+                        {% if y.payment_status == 'unfulfilled'  %}
+                        <p> status = <span class="badge bg-danger"> {{ y.payment_status}}</span></p>
+                        {% else %}
+                        <p> status = <span class="badge bg-success"> {{ y.payment_status}}</span></p>
+                        {% endif %}
+                        <hr>
+
+                    {% endif %}
+                    {% endfor %}
+                    <h1>Fulfilled Bills</h1>
+<br>
+                        {% for y in bills %}
+                    {% if y.payment_status == 'fulfilled'  %}    
+                        seller name: {{y.seller.user.username}}<br>
+                        buyer name: {{y.buyer.user.username}}<br>
+                        amount = {{y.amount}}<br>
+                        {% if y.payment_status == 'unfulfilled'  %}
+                        <p> status = <span class="badge bg-danger"> {{ y.payment_status}}</span></p>
+                        {% else %}
+                        <p> status = <span class="badge bg-success"> {{ y.payment_status}}</span></p>
+                        {% endif %}
+                        <hr>
+
+                    {% endif %}
+                    {% endfor %}
+                {% else %}
+                            {% for y in bills %}
+                                {% if request.user.username == y.seller.user.username %}
+                                    {% if y.payment_status == 'unfulfilled'  %}
+                                    
+                                    seller name: {{y.seller.user.username}}<br>
+                                    buyer name: {{y.buyer.user.username}}<br>
+                                    amount = {{y.amount}}<br>
+                                    {% if y.payment_status == 'unfulfilled'  %}
+                                    <p> status = <span class="badge bg-danger"> {{ y.payment_status}}</span></p>
+                                    {% else %}
+                                    <p> status = <span class="badge bg-success"> {{ y.payment_status}}</span></p>
+                                    {% endif %}
+                                    <hr>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+
+                            <h1> fulfilled bills</h1>
+                            {% for y in bills %}
+                            {% if request.user.username == y.seller.user.username %}
+                                {% if y.payment_status == 'fulfilled'  %}
+                                
+                                seller name: {{y.seller.user.username}}<br>
+                                buyer name: {{y.buyer.user.username}}<br>
+                                amount = {{y.amount}}<br>
+                                {% if y.payment_status == 'unfulfilled'  %}
+                                <p> status = <span class="badge bg-danger"> {{ y.payment_status}}</span></p>
+                                {% else %}
+                                <p> status = <span class="badge bg-success"> {{ y.payment_status}}</span></p>
+                                {% endif %}
+                                <hr>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                           
+
+                                
+                            
+
+
+                {% endif %}
+            {% else %}
+                        <div class="alert alert-success" role="alert">
+                            Check your pending bills
+                            <br>
+                            <a href="{% url 'payment' %}"> <span class="badge bg-success"> VIEW </span></a>
+                        </div>
+
+            {% endif %}
+        </div>
+        <div class="earning">
+            {% if request.user.is_superuser  %}
+            <h2> Total Earnings </h2>
+            <div class="alert alert-info" role="alert">
+                NRS - {{total}}
+                <br>
+              
+            </div>
+               
+            {% endif %}
+        </div>
+       
+</div>
+{% endblock %}

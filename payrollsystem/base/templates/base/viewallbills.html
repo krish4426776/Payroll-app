@@ -1,0 +1,38 @@
+{% include 'base/nav.html' %}
+{% block content %}
+<div>
+    <h1> ALL BILLS</h1>
+{% for y in bill %}
+        {% if y.payment_status == 'unfulfilled'  %}
+            seller name: {{y.seller.user.username}}<br>
+            buyer name: {{y.buyer.user.username}}<br>
+            amount = {{y.amount}}<br>
+            {% if y.payment_status == 'unfulfilled'  %}
+            <p> status = <span class="badge bg-danger"> {{ y.payment_status}}</span></p>
+            {% else %}
+            <p> status = <span class="badge bg-success"> {{ y.payment_status}}</span></p>
+            {% endif %}
+            <hr>
+        {% endif %}
+{% endfor %}
+
+<h1>Fulfilled Bills</h1>
+<br>
+    {% for y in bills %}
+        {% if y.payment_status == 'fulfilled'  %}
+        seller name: {{y.seller.user.username}}<br>
+        buyer name: {{y.buyer.user.username}}<br>
+        amount = {{y.amount}}<br>
+        {% if y.payment_status == 'unfulfilled'  %}
+        <p> status = <span class="badge bg-danger"> {{ y.payment_status}}</span></p>
+        {% else %}
+        <p> status = <span class="badge bg-success"> {{ y.payment_status}}</span></p>
+        {% endif %}
+        <hr>
+    {% endif %}
+{% endfor %}
+
+
+</div>
+
+{% endblock %}

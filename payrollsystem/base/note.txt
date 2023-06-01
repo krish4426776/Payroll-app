@@ -1,0 +1,4 @@
+Make a bliing system with hierarchical users e.g admin , seller, buyer 
+- let the admin users to create seller and buyer user account and view all the users and bills , earnings e.t.c 
+- let seller to add bill for payment 
+- let the buyer to pay the bill.

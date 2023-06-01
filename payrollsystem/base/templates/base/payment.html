@@ -1,0 +1,37 @@
+{% include 'base/nav.html' %}
+
+<div>
+           
+    <h1> BILLS </h1>
+   
+    <br>
+    {% for y in bills %}
+        {% if request.user.username == y.buyer.user.username %}
+             {% if y.payment_status == 'unfulfilled'  %}
+                Payment to: {{y.seller.user.username}}<br>
+                
+                Due Amount = {{y.amount}}
+                <br>
+                
+                status = <span class="badge bg-danger"> {{ y.payment_status}}</span><a href="{% url 'payy' y.id %}"> PAY </a>
+                <br>
+                <hr>
+                   
+            {% endif %}
+
+        {% endif %}
+    {% endfor %}
+
+</div>
+
+<h1>Fulfilled Bills</h1>
+<br>
+{% for y in bills %}
+    {% if request.user.username == y.buyer.user.username and y.payment_status == 'fulfilled' %}
+        Payment to: {{ y.seller.user.username }}<br>
+        Due Amount = {{ y.amount }}<br>
+        <p>Status: <span class="badge bg-success">{{ y.payment_status }}</span></p>
+        <hr>
+    {% endif %}
+{% endfor %}
+</div>

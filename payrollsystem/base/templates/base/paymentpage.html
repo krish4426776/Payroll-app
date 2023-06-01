@@ -1,0 +1,9 @@
+<div>
+    <h1>Payment Confirmation</h1>
+    <p>You are about to pay the bill to: {{ bills.seller.user.username }}</p>
+    <p>Due Amount: {{ bills.amount }}</p>
+    <form method="post" >
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary">Confirm Payment</button>
+    </form>
+</div>
